@@ -1,4 +1,10 @@
+import { keyboardElement } from "./main";
 import { keyboardConfig } from "./state";
+
+export function isWithinKeyboardElement(element: HTMLElement | null): boolean {
+  if (!element) return false;
+  return keyboardElement.contains(element);
+}
 
 export function canSelectElement(element: HTMLElement | null): boolean {
   if (!element) return false;

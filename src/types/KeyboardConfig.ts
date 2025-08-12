@@ -18,6 +18,7 @@ export class KeyboardConfig {
   container: HTMLElement = document.body;
 
   merge(config: Partial<KeyboardConfig>) {
-    merge(new KeyboardConfig(), config);
+    merge(this, config);
+    return this;
   }
 }
