@@ -4,6 +4,9 @@ import { numpadLayout } from '../layouts/numpad'
 import { ref, computed, watch } from 'vue';
 import { canSelectElement } from '../utils';
 
+const previewInput = ref<HTMLInputElement>();
+const previewInputValue = ref('');
+
 const isShifted = ref(false);
 const showSymbols = ref(false);
 
@@ -11,8 +14,7 @@ const currentKeyset = computed(() => {
     return isShifted.value ? currentKeyboardLanguage.value.shift : currentKeyboardLanguage.value.normal
 })
 
-const previewInput = ref<HTMLInputElement>();
-const previewInputValue = ref('');
+
 
 const symbolKeyset = [
     ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"],
@@ -109,15 +111,7 @@ function onKeyPress(key: string) {
             return;
         }
 
-        // Auto-capitalize first character if enabled and field is empty
         let charToInsert = key;
-        if (
-            keyboardConfig.value.autoCapitalizeOnEmpty &&
-            textarea.value.length === 0 &&
-            /^[a-zA-Z]$/.test(key)
-        ) {
-            charToInsert = key.toUpperCase();
-        }
 
         // Regular key press
         textarea.value = textBefore + charToInsert + textAfter;
@@ -174,15 +168,8 @@ function onKeyPress(key: string) {
         return;
     }
 
-    // Auto-capitalize first character if enabled and field is empty
     let charToInsert = key;
-    if (
-        keyboardConfig.value.autoCapitalizeOnEmpty &&
-        previewInputValue.value.length === 0 &&
-        /^[a-zA-Z]$/.test(key)
-    ) {
-        charToInsert = key.toUpperCase();
-    }
+
 
     // Insert character at cursor position
     const beforeCursor = previewInputValue.value.slice(0, cursorPos);
@@ -190,6 +177,7 @@ function onKeyPress(key: string) {
     previewInputValue.value = beforeCursor + charToInsert + afterCursor;
     caretPosition.value = cursorPos + 1;
     updateTargetFromPreview();
+    isShifted.value = false;
 }
 
 function formatAutoDecimal(digits: string) {
@@ -219,10 +207,14 @@ function bindTargetToPreview() {
             caretPosition.value = previewInputValue.value.length;
         }
         setTimeout(() => {
-            if (previewInput.value) {
+            if (previewInput.value && inputType.value !== 'number') {
                 previewInput.value.setSelectionRange(caretPosition.value, caretPosition.value);
             }
         }, 0);
+
+        if (previewInputValue.value.length == 0) {
+            isShifted.value = true;
+        }
     }
 }
 
@@ -230,9 +222,11 @@ function updateTargetFromPreview() {
     if (previewInput.value && targetElement.value) {
         targetElement.value.value = previewInputValue.value;
         // Sync cursor position to target element
-        targetElement.value.setSelectionRange(caretPosition.value, caretPosition.value);
-        // Also update preview input cursor position
-        previewInput.value.setSelectionRange(caretPosition.value, caretPosition.value);
+        if (inputType.value !== 'number') {
+            targetElement.value.setSelectionRange(caretPosition.value, caretPosition.value);
+            // Also update preview input cursor position
+            previewInput.value.setSelectionRange(caretPosition.value, caretPosition.value);
+        }
 
         // Focus
         if (isTextArea.value) {
@@ -272,7 +266,7 @@ function trackTextAreaCaret() {
 window.addEventListener('click', handleClickOutside);
 
 watch(targetElement, (newTarget, oldTarget) => {
-    isShifted.value = false;
+    // isShifted.value = false;
     showSymbols.value = false;
 
     // Clean up old listeners
@@ -296,6 +290,7 @@ watch(targetElement, (newTarget, oldTarget) => {
 }, {
     immediate: true
 });
+
 
 function dispatchEvents() {
     if (targetElement.value) {
@@ -512,7 +507,7 @@ function updateCaretPosition() {
     .input-wrapper {
         position: relative;
         width: 100%;
-        max-width: 90vw;
+        max-width: 100vw;
         display: flex;
         align-items: center;
     }
@@ -525,6 +520,12 @@ function updateCaretPosition() {
     &.opened {
         transform: translateY(0);
         opacity: 1;
+    }
+
+    button,
+    input {
+        appearance: none;
+        font-family: inherit;
     }
 
     /* Material 3 color variables */
@@ -581,6 +582,7 @@ function updateCaretPosition() {
 
 .keyboard-preview {
     padding: 1rem;
+    padding-bottom: 0;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -591,7 +593,7 @@ function updateCaretPosition() {
 
 .keyboard-preview input {
     width: 100%;
-    max-width: 90vw;
+    max-width: 100vw;
     box-sizing: border-box;
     padding: 1rem 1.25rem;
     font-size: 1.1rem;
@@ -641,7 +643,7 @@ function updateCaretPosition() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0rem 0;
     width: 100%;
 
     &.numpad {
@@ -653,9 +655,8 @@ function updateCaretPosition() {
 
 .keyboard {
     border-radius: 1rem;
-    padding: 0.75rem 0.5rem 1.5rem 0.5rem;
+    padding: 0.75rem 1rem 1.5rem 1rem;
     width: 100%;
-    max-width: 90vw;
     box-sizing: border-box;
 }
 
