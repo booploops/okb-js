@@ -214,6 +214,8 @@ function bindTargetToPreview() {
 
         if (previewInputValue.value.length == 0) {
             isShifted.value = true;
+        }else{
+            isShifted.value = false;
         }
     }
 }
@@ -266,7 +268,6 @@ function trackTextAreaCaret() {
 window.addEventListener('click', handleClickOutside);
 
 watch(targetElement, (newTarget, oldTarget) => {
-    // isShifted.value = false;
     showSymbols.value = false;
 
     // Clean up old listeners
