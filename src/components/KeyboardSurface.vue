@@ -14,8 +14,6 @@ const currentKeyset = computed(() => {
     return isShifted.value ? currentKeyboardLanguage.value.shift : currentKeyboardLanguage.value.normal
 })
 
-
-
 const symbolKeyset = [
     ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"],
     ["_", "+", "=", "-", "[", "]", "{", "}", "|", "\\"],
@@ -58,8 +56,6 @@ const inputType = computed(() => {
 const isTextArea = computed(() => {
     return targetElement.value instanceof HTMLTextAreaElement;
 });
-
-
 
 /**
  * If true, the numpad will automatically insert a decimal point.
@@ -540,11 +536,11 @@ function updateCaretPosition() {
     --md-sys-color-on-surface-variant: #49454f;
     --md-sys-color-on-surface-variant-dark: #cac4d0;
     --md-sys-color-primary: #6750a4;
-    --md-sys-color-primary-dark: #d0bcff;
-    --md-sys-color-primary-container: #eaddff;
-    --md-sys-color-primary-container-dark: #4f378b;
-    --md-sys-color-on-primary-container: #21005d;
-    --md-sys-color-on-primary-container-dark: #eaddff;
+    --md-sys-color-primary-dark: color-mix(in srgb, #6750a4 80%, white);
+    --md-sys-color-primary-container: color-mix(in srgb, #6750a4 20%, white);
+    --md-sys-color-primary-container-dark: color-mix(in srgb, #6750a4 60%, black);
+    --md-sys-color-on-primary-container: color-mix(in srgb, #6750a4 90%, black);
+    --md-sys-color-on-primary-container-dark: color-mix(in srgb, #6750a4 20%, white);
     --md-sys-color-secondary: #625b71;
     --md-sys-color-secondary-dark: #cbc2db;
     --md-sys-color-outline: #79747e;
