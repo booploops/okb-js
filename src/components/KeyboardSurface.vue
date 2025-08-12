@@ -120,6 +120,7 @@ function onKeyPress(key: string) {
 
         // Keep focus on textarea
         textarea.focus();
+        isShifted.value = false;
         return;
     }
 
