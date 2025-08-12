@@ -8,9 +8,6 @@ export function bindKeyboard(doc: Document) {
 
     doc.addEventListener('click', (event: MouseEvent) => {
         const target = event.target as HTMLElement;
-        if (target.getAttribute('okb-ignore') !== null) {
-            return;
-        }
         if (
             canSelectElement(target)
         ) {

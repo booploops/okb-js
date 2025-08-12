@@ -213,9 +213,9 @@ function bindTargetToPreview() {
             }
         }, 0);
 
-        if (previewInputValue.value.length == 0) {
+        if (previewInputValue.value.length == 0 && keyboardConfig.value.autoCapitalizeOnEmpty) {
             isShifted.value = true;
-        }else{
+        } else {
             isShifted.value = false;
         }
     }
