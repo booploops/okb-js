@@ -6,6 +6,7 @@ import { canSelectElement } from '../utils';
 
 const previewInput = ref<HTMLInputElement>();
 const previewInputValue = ref('');
+const previewInputLabel = ref('');
 
 const isShifted = ref(false);
 const showSymbols = ref(false);
@@ -195,6 +196,7 @@ function toggleSymbols() {
 
 function bindTargetToPreview() {
     if (previewInput.value && targetElement.value) {
+        previewInputLabel.value = targetElement.value.getAttribute('aria-label') || targetElement.value.getAttribute('placeholder') || '';
         previewInputValue.value = targetElement.value.value;
         if (isTextArea.value) {
             // Inherit caret for textarea
@@ -352,6 +354,7 @@ function updateCaretPosition() {
                     spellcheck="false"
                     autocapitalize="false"
                     autocomplete="false"
+                    :placeholder="previewInputLabel"
                     @click="updateCaretPosition"
                     @keyup="updateCaretPosition"
                     @focus="updateCaretPosition"
