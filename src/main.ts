@@ -2,6 +2,7 @@ import { defineCustomElement } from "vue";
 import KeyboardSurface from "./components/KeyboardSurface.vue";
 import { bindKeyboard } from "./bind";
 import { keyboardConfig, targetElement } from "./state";
+import type { KeyboardConfig } from "./types/KeyboardConfig";
 
 const keyboardSurface = defineCustomElement(KeyboardSurface, {
   shadowRoot: false,
@@ -10,22 +11,9 @@ const keyboardSurface = defineCustomElement(KeyboardSurface, {
 customElements.define("keyboard-surface", keyboardSurface);
 
 const keyboardElement = document.createElement("keyboard-surface");
-
-type InitOptions = {
-  container: HTMLElement;
-};
-
-function init(options?: Partial<InitOptions>) {
-  const defaults = {
-    container: document.body,
-  };
-  options = { ...defaults, ...options };
-  if (!options.container) {
-    throw new Error(
-      "Container element is required for keyboard initialization."
-    );
-  }
-  options.container.appendChild(keyboardElement);
+function init(options: Partial<KeyboardConfig> = {}) {
+  keyboardConfig.value.merge(options);
+  keyboardConfig.value.container.appendChild(keyboardElement);
 }
 
 export { keyboardElement, bindKeyboard, targetElement, init, keyboardConfig };

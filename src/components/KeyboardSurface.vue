@@ -250,9 +250,6 @@ function handleClickOutside(event: MouseEvent) {
     // Check for okb-ignore attribute or if clicked element is a child of an element with okb-ignore
     let element: HTMLElement | null = clickedElement;
     while (element) {
-        if (element.getAttribute?.('okb-ignore') !== null) {
-            return; // Ignore clicks on elements with okb-ignore
-        }
         element = element.parentElement;
     }
 
