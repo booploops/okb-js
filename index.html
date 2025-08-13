@@ -12,8 +12,9 @@
       rel="stylesheet"
     />
     <style>
-      html, body {
-        font-family: 'Roboto Flex', cursive;
+      html,
+      body {
+        font-family: "Roboto Flex", cursive;
       }
     </style>
   </head>
@@ -44,14 +45,21 @@
     <input type="submit" value="Submit" />
     <input type="reset" value="Reset" />
     <input type="button" value="Button" />
-    <input
-      type="image"
-      src="https://via.placeholder.com/40"
-      alt="Image Button"
-    />
     <hr />
     <iframe src="./iframe-test.html" okb-frame="1" frameborder="1"></iframe>
     <textarea name="" id=""></textarea>
+    <hr />
+    <label>
+      Number Input
+      <input
+        type="text"
+        placeholder="Text"
+        id="NumberInputTarget"
+        okb-ignore="1"
+      />
+    </label>
+
+    <okb-numpad-input decimal="1" id="numberInputTag" target-selector="#NumberInputTarget"></okb-numpad-input>
     <hr />
     <script type="module">
       import { bindKeyboard, init } from "/src/main.ts";
@@ -59,6 +67,11 @@
       document.addEventListener("DOMContentLoaded", () => {
         bindKeyboard(document);
         init();
+
+        console.log(numberInputTag);
+
+        // numberInputTag.targetElement =
+        //   document.getElementById("NumberInputTarget");
       });
     </script>
     <style>
