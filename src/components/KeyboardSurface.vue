@@ -60,7 +60,7 @@ const inputType = computed(() => {
 });
 
 const isTextArea = computed(() => {
-    return targetElement.value instanceof HTMLTextAreaElement;
+    return targetElement.value?.tagName === 'TEXTAREA';
 });
 
 /**
@@ -275,7 +275,7 @@ watch(targetElement, (newTarget, oldTarget) => {
     showSymbols.value = false;
 
     // Clean up old listeners
-    if (oldTarget instanceof HTMLTextAreaElement) {
+    if (oldTarget?.tagName === 'TEXTAREA') {
         oldTarget.removeEventListener('click', trackTextAreaCaret);
         oldTarget.removeEventListener('keyup', trackTextAreaCaret);
         oldTarget.removeEventListener('select', trackTextAreaCaret);
@@ -346,7 +346,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-    {{ isNumpad }} {{ inputType }}
     <div
         class="keyboard-container"
         :class="{
