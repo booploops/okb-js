@@ -22,7 +22,7 @@ const symbolKeyset = [
 ];
 
 const isNumpad = computed(() => {
-    return inputType.value === 'number' || inputType.value === 'tel' || targetElement.value?.getAttribute(keyboardConfig.value.attributeConfig.NumberTypeAttribute) !== null;
+    return inputType.value === 'number' || inputType.value === 'tel' || targetElement.value?.getAttribute(keyboardConfig.value.attributeConfig.NumberTypeAttribute) != null;
 });
 
 const keyRows = computed(() => {
@@ -49,10 +49,10 @@ const okbType = computed(() => {
     }
 
     // check for numpad
-    if (targetElement.value?.getAttribute(keyboardConfig.value.attributeConfig.NumberTypeAttribute)) {
+    if (targetElement.value?.getAttribute(keyboardConfig.value.attributeConfig.NumberTypeAttribute) != null) {
         return 'number'
     }
-    return targetElement.value?.type;
+    return targetElement.value?.type || 'text';
 });
 
 const inputType = computed(() => {
@@ -339,6 +339,7 @@ function updateCaretPosition() {
 </script>
 
 <template>
+    {{ isNumpad }} {{ inputType }}
     <div
         class="keyboard-container"
         :class="{
