@@ -22,7 +22,7 @@ const symbolKeyset = [
 ];
 
 const isNumpad = computed(() => {
-    return inputType.value === 'number' || inputType.value === 'tel' || targetElement.value?.getAttribute('okb-numtype') === 'numpad';
+    return inputType.value === 'number' || inputType.value === 'tel' || targetElement.value?.getAttribute(keyboardConfig.value.attributeConfig.NumberTypeAttribute) !== null;
 });
 
 const keyRows = computed(() => {
@@ -44,8 +44,13 @@ const keyRows = computed(() => {
 });
 
 const okbType = computed(() => {
-    if (targetElement.value?.getAttribute('okb-type')) {
-        return targetElement.value.getAttribute('okb-type');
+    if (targetElement.value?.getAttribute(keyboardConfig.value.attributeConfig.OverrideTypeAttribute)) {
+        return targetElement.value.getAttribute(keyboardConfig.value.attributeConfig.OverrideTypeAttribute);
+    }
+
+    // check for numpad
+    if (targetElement.value?.getAttribute(keyboardConfig.value.attributeConfig.NumberTypeAttribute)) {
+        return 'number'
     }
     return targetElement.value?.type;
 });
@@ -64,7 +69,7 @@ const isTextArea = computed(() => {
  * If the user entered "2" it will be converted to "0.02"
  */
 const numpadAutoDecimal = computed(() => {
-    return targetElement.value ? targetElement.value.getAttribute('okb-numtype') == 'dec' : false;
+    return targetElement.value ? targetElement.value.getAttribute(keyboardConfig.value.attributeConfig.NumberTypeAttribute) == 'dec' : false;
 });
 
 function onKeyPress(key: string) {

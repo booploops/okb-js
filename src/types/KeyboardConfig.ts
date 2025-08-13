@@ -17,6 +17,11 @@ export class KeyboardConfig {
   ignoreSelectors = ["[okb-ignore]"];
   container: HTMLElement = document.body;
 
+  attributeConfig = {
+    NumberTypeAttribute: 'okb-numtype',
+    OverrideTypeAttribute: 'okb-type'
+  }
+
   merge(config: Partial<KeyboardConfig>) {
     merge(this, config);
     return this;
