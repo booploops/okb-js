@@ -1,12 +1,14 @@
-import { targetElement } from "./state";
+import { keyboardConfig, targetElement } from "./main";
 import { canSelectElement, isWithinKeyboardElement } from "./utils";
 
 export function bindKeyboard(doc: Document) {
   doc.addEventListener("keydown", () => {
+    if (!keyboardConfig.value.enabled) return;
     targetElement.value = undefined;
   });
 
   doc.addEventListener("click", (event: MouseEvent) => {
+    if (!keyboardConfig.value.enabled) return;
     const target = event.target as HTMLElement;
     if (canSelectElement(target)) {
       targetElement.value = target as HTMLInputElement;

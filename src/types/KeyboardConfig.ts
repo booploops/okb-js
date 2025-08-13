@@ -1,6 +1,7 @@
 import { merge } from "lodash-es";
 
 export class KeyboardConfig {
+  enabled = true;
   theme: string = "dark";
   language: string = "en-US";
   autoCapitalizeOnEmpty: boolean = true;

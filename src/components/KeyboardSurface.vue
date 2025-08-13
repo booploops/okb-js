@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { targetElement, caretPosition, currentKeyboardLanguage, keyboardConfig } from '../state';
 import { numpadLayout } from '../layouts/numpad'
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onUnmounted, onMounted } from 'vue';
 import { canSelectElement } from '../utils';
 
 const previewInput = ref<HTMLInputElement>();
@@ -244,6 +244,8 @@ function updateTargetFromPreview() {
 
 function handleClickOutside(event: MouseEvent) {
 
+    if(!keyboardConfig.value.enabled) return;
+
     const keyboardContainer = document.querySelector('.keyboard-container');
     const clickedElement = event.target as HTMLElement;
 
@@ -268,8 +270,6 @@ function trackTextAreaCaret() {
         caretPosition.value = textarea.selectionStart || 0;
     }
 }
-
-window.addEventListener('click', handleClickOutside);
 
 watch(targetElement, (newTarget, oldTarget) => {
     showSymbols.value = false;
@@ -336,6 +336,13 @@ function updateCaretPosition() {
     }
 }
 
+onMounted(() => {
+    window.addEventListener('click', handleClickOutside);
+})
+
+onUnmounted(() => {
+    window.removeEventListener('click', handleClickOutside);
+})
 </script>
 
 <template>
