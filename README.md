@@ -122,15 +122,17 @@ OKB.init({
 
 ## Language Support
 
-Currently only English is supported.
+Currently only English (US) is supported.
 
-| Language     | Supported |
-| ------------ | --------- |
-| English (US) | ✅        |
+| Language     | Supported | Notes                |
+| ------------ | --------- | -------------------- |
+| English (US) | ✅        | The default language |
 
 ## Technical Details
 
 This project is built with Vue 3 and TypeScript and uses Web Components to inject the keyboard into the DOM.
+
+The web component itself has the Shadow DOM disabled, so it can be styled with CSS.
 
 ## Dependencies
 

@@ -6,10 +6,12 @@
   file, You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 <script setup lang="ts">
-import { targetElement, caretPosition, currentKeyboardLanguage, keyboardConfig } from '../state';
+import { targetElement, caretPosition, currentKeyboardLanguage, keyboardConfig, updateKeyboardLanguage } from '../state';
 import { numpadLayout } from '../layouts/numpad'
 import { ref, computed, watch, onUnmounted, onMounted } from 'vue';
 import { canSelectElement } from '../utils';
+import LanguagePicker from './LanguagePicker.vue';
+
 
 const previewInput = ref<HTMLInputElement>();
 const previewInputValue = ref('');
@@ -17,6 +19,7 @@ const previewInputLabel = ref('');
 
 const isShifted = ref(false);
 const showSymbols = ref(false);
+const showLanguagePicker = ref(false);
 
 const currentKeyset = computed(() => {
     return isShifted.value ? currentKeyboardLanguage.value.shift : currentKeyboardLanguage.value.normal
@@ -39,14 +42,9 @@ const keyRows = computed(() => {
     if (showSymbols.value) {
         return symbolKeyset;
     }
-    // Only keep / , . as symbols in main layout
-    return currentKeyset.value.map((row, idx) => {
-        if (idx === currentKeyset.value.length - 1) {
-            // Only keep z x c v b n m , . /
-            return row.split(' ').filter(k => /[a-zA-Z0-9]|,|\.|\//.test(k));
-        }
-        // Remove symbols from other rows
-        return row.split(' ').filter(k => /[a-zA-Z0-9]/.test(k));
+    // Keep all characters from the layout, including non-English characters
+    return currentKeyset.value.map((row) => {
+        return row.split(' ');
     });
 });
 
@@ -206,6 +204,16 @@ function toggleSymbols() {
     isShifted.value = false;
 }
 
+function toggleLanguagePicker() {
+    showLanguagePicker.value = !showLanguagePicker.value;
+}
+
+function selectLanguage(languageCode: string) {
+    keyboardConfig.value.language = languageCode;
+    updateKeyboardLanguage();
+    showLanguagePicker.value = false;
+}
+
 function bindTargetToPreview() {
     if (previewInput.value && targetElement.value) {
         previewInputLabel.value = targetElement.value.getAttribute('aria-label') || targetElement.value.getAttribute('placeholder') || '';
@@ -303,6 +311,13 @@ watch(targetElement, (newTarget, oldTarget) => {
     immediate: true
 });
 
+// Watch for language changes and update keyboard layout
+watch(() => keyboardConfig.value.language, () => {
+    updateKeyboardLanguage();
+}, {
+    immediate: true
+});
+
 
 function dispatchEvents() {
     if (targetElement.value) {
@@ -350,6 +365,7 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('click', handleClickOutside);
 })
+
 </script>
 
 <template>
@@ -479,6 +495,7 @@ onUnmounted(() => {
                             >
                                 <span>Space</span>
                             </button>
+                            <LanguagePicker @toggle-picker="toggleLanguagePicker" />
                             <button
                                 class="keyboard-key done-key"
                                 @click="targetElement = undefined"
@@ -504,6 +521,35 @@ onUnmounted(() => {
                             <span>Enter</span>
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Language Picker Overlay -->
+            <div class="language-picker-overlay" v-if="showLanguagePicker">
+                <div class="language-picker-header">
+                    <h3>Select Language</h3>
+                    <button class="close-picker" @click="showLanguagePicker = false">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="language-options">
+                    <button
+                        v-for="language in [
+                            { code: 'en-US', name: 'English', flag: '🇺🇸' },
+                            { code: 'es-ES', name: 'Español', flag: '🇪🇸' },
+                            { code: 'ja-JP', name: '日本語', flag: '🇯🇵' }
+                        ]"
+                        :key="language.code"
+                        class="language-option-btn"
+                        :class="{ 'selected': language.code === keyboardConfig.language }"
+                        @click="selectLanguage(language.code)"
+                    >
+                        <span class="flag-large">{{ language.flag }}</span>
+                        <span class="language-name">{{ language.name }}</span>
+                        <span class="language-code">{{ language.code }}</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -665,6 +711,7 @@ onUnmounted(() => {
     align-items: center;
     padding: 0rem 0;
     width: 100%;
+    position: relative;
 
     &.numpad {
         max-width: 25%;
@@ -705,6 +752,8 @@ onUnmounted(() => {
     justify-content: center;
     gap: 0.375rem;
     width: 100%;
+    flex-wrap: nowrap;
+    overflow: hidden;
 }
 
 .keyboard-key {
@@ -717,9 +766,9 @@ onUnmounted(() => {
     font-size: clamp(0.875rem, 2.5vw, 2rem);
     font-weight: 500;
     letter-spacing: 0.1px;
-    padding: 0 1em;
+    padding: 0 0.75em;
     outline: none;
-    flex: 1;
+    flex: 1 1 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -782,7 +831,8 @@ onUnmounted(() => {
 }
 
 .space-bar {
-    flex-grow: 5;
+    flex: 3 1 0;
+    min-width: 4rem;
 }
 
 .shift-key {
@@ -849,7 +899,8 @@ onUnmounted(() => {
 }
 
 .done-key {
-    flex-grow: 2;
+    flex: 1.5 1 0;
+    min-width: 3.5rem;
     background: var(--md-sys-color-primary-container) !important;
     color: var(--md-sys-color-on-primary-container) !important;
     font-weight: 600;
@@ -877,7 +928,8 @@ onUnmounted(() => {
 }
 
 .at-key {
-    flex-grow: 1.5;
+    flex: 1 1 0;
+    min-width: 3rem;
 }
 
 .sym-key {
@@ -885,7 +937,8 @@ onUnmounted(() => {
     color: white !important;
     font-weight: 600;
     border-radius: 1.25rem;
-    min-width: 3.5rem;
+    flex: 1 1 0;
+    min-width: 3rem;
 
     &::before {
         background: white;
@@ -925,6 +978,161 @@ onUnmounted(() => {
 
     .keyboard-main .keyboard-row {
         gap: 0.25rem;
+    }
+
+    /* Ensure bottom row fits on small screens */
+    .keyboard-main .keyboard-row:last-child {
+        gap: 0.125rem;
+    }
+
+    .keyboard-key {
+        min-width: 2.5rem;
+        padding: 0 0.5em;
+    }
+
+    .space-bar {
+        flex: 3 1 0;
+        min-width: 3rem;
+    }
+
+    .done-key {
+        flex: 1.5 1 0;
+        min-width: 2.5rem;
+    }
+
+    .sym-key {
+        flex: 1 1 0;
+        min-width: 2.5rem;
+    }
+}
+
+/* Language Picker Overlay */
+.language-picker-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--md-sys-color-surface-container);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem 1rem 0 0;
+    overflow: hidden;
+}
+
+.keyboard-container.dark .language-picker-overlay {
+    background: var(--md-sys-color-surface-container-dark);
+}
+
+.language-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+
+    h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+    }
+}
+
+.keyboard-container.dark .language-picker-header {
+    border-bottom-color: var(--md-sys-color-outline-dark);
+
+    h3 {
+        color: var(--md-sys-color-on-surface-dark);
+    }
+}
+
+.close-picker {
+    background: none;
+    border: none;
+    color: var(--md-sys-color-on-surface);
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background: var(--md-sys-color-surface-variant);
+    }
+}
+
+.keyboard-container.dark .close-picker {
+    color: var(--md-sys-color-on-surface-dark);
+
+    &:hover {
+        background: var(--md-sys-color-surface-variant-dark);
+    }
+}
+
+.language-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.language-option-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--md-sys-color-surface-variant);
+    border: none;
+    border-radius: 1rem;
+    color: var(--md-sys-color-on-surface);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    font-size: 1rem;
+
+    &:hover {
+        background: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+    }
+
+    &.selected {
+        background: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        font-weight: 600;
+    }
+
+    .flag-large {
+        font-size: 2rem;
+    }
+
+    .language-name {
+        flex: 1;
+        text-align: left;
+        font-weight: 500;
+    }
+
+    .language-code {
+        font-size: 0.875rem;
+        opacity: 0.7;
+    }
+}
+
+.keyboard-container.dark .language-option-btn {
+    background: var(--md-sys-color-surface-variant-dark);
+    color: var(--md-sys-color-on-surface-dark);
+
+    &:hover {
+        background: var(--md-sys-color-primary-container-dark);
+        color: var(--md-sys-color-on-primary-container-dark);
+    }
+
+    &.selected {
+        background: var(--md-sys-color-primary-container-dark);
+        color: var(--md-sys-color-on-primary-container-dark);
     }
 }
 </style>
