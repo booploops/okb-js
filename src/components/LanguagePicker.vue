@@ -37,7 +37,7 @@ defineExpose({ languages, currentLanguage, selectLanguage });
 <template>
   <button
     class="language-picker-button keyboard-key"
-    @click="togglePicker"
+    @click.stop="togglePicker"
   >
     <span class="flag">{{ currentLanguage.flag }}</span>
   </button>

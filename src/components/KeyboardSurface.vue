@@ -525,10 +525,10 @@ onUnmounted(() => {
             </div>
 
             <!-- Language Picker Overlay -->
-            <div class="language-picker-overlay" v-if="showLanguagePicker">
+            <div class="language-picker-overlay" v-if="showLanguagePicker" @click.stop>
                 <div class="language-picker-header">
                     <h3>Select Language</h3>
-                    <button class="close-picker" @click="showLanguagePicker = false">
+                    <button class="close-picker" @click.stop="showLanguagePicker = false">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
@@ -544,7 +544,7 @@ onUnmounted(() => {
                         :key="language.code"
                         class="language-option-btn"
                         :class="{ 'selected': language.code === keyboardConfig.language }"
-                        @click="selectLanguage(language.code)"
+                        @click.stop="selectLanguage(language.code)"
                     >
                         <span class="flag-large">{{ language.flag }}</span>
                         <span class="language-name">{{ language.name }}</span>
