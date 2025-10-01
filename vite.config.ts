@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2025-Present booploops and contributors
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
@@ -22,7 +29,7 @@ export default defineConfig({
       entry: "src/main.ts", // adjust to your entry file
       name: "OKB",
       fileName: (format) => `okb.${format}.js`,
-      formats: ["es", "iife"],
+      formats: ["es", "iife", "umd"],
     },
     rollupOptions: {
       // Externalize dependencies if needed

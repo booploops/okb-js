@@ -1,5 +1,141 @@
-# Vue 3 + TypeScript + Vite
+# okb-js
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+**This project is still in early development.**
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+okb-js (short for Open Keyboard) is an easy to use drop-in On Screen Keyboard for web based applications.
+
+This project was created out of a need for an on-screen keyboard for kiosk like environments, where the keyboard is not always available or provided by the operating system.
+
+It is intended to be extremely portable, framework agnostic, and can be used in a variety of different environments. All from a single file.
+
+okb-js is compiled for **ESM**, **IIFE** and **UMD** formats.
+
+## Usage Examples
+
+### Enabling the keyboard for the entire DOM
+
+**ESM**
+
+```ts
+import { bindKeyboard, init } from "okb-js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindKeyboard(document);
+  init();
+});
+```
+
+**IIFE** (CDN)
+
+```html
+<script src="path/to/okb.iife.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    OKB.bindKeyboard(document);
+    OKB.init();
+  });
+</script>
+```
+
+### Ignored Elements
+
+You can ignore elements by adding the `okb-ignore` attribute to the element.
+
+```html
+<input type="text" placeholder="Text" okb-ignore />
+```
+
+### Number Types
+
+You can specify the number type by adding the `okb-numtype` attribute to the element.
+Currently supported number types are: `dec` (automatic decimal point, example: 123 -> 1.23)
+
+```html
+<input type="number" placeholder="Number" okb-numtype="dec" />
+```
+
+### Usage with `<iframe>`
+
+The keyboard can be injected into an iframe by adding the `okb-frame` attribute to the iframe.
+
+```html
+<iframe src="path/to/iframe.html" okb-frame></iframe>
+```
+
+This scenario is useful for embedding the keyboard in a separate document, such as a popup or modal.
+
+Alternatively, if the iframe has adequate privileges, the frame can request `bindKeyboard` from `top` or `parent` to bind the keyboard to the iframe.
+
+#### Example implementation
+
+```html
+<!-- Parent Document -->
+<iframe src="path/to/iframe.html" okb-frame="1"></iframe>
+<script type="module">
+  import { bindKeyboard } from "okb-js";
+
+  /// ...
+
+  window.OKB = {
+    bindKeyboard,
+  };
+</script>
+```
+
+```html
+<!-- Child Document -->
+<script>
+  // Calling the parent's bindKeyboard function will make it so that the parent's keyboard instance can be used in the child document
+  parent.OKB.bindKeyboard(document);
+</script>
+```
+
+## Configuration
+
+```ts
+OKB.init({
+  // or simply init() when imported as a module
+  enabled: true, // Whether the keyboard is enabled
+  theme: "dark", // The theme of the keyboard
+  language: "en-US", // The language of the keyboard
+  autoCapitalizeOnEmpty: true, // Whether to automatically capitalize the first letter of the input
+  allowedInputTypes: [
+    "text",
+    "password",
+    "email",
+    "search",
+    "tel",
+    "url",
+    "number",
+  ], // The input types that are allowed
+  allowedTags: ["input", "textarea"], // The tags that are allowed
+  ignoreSelectors: ["[okb-ignore]"], // The selectors that are ignored
+  container: document.body, // The container of the keyboard
+  attributeConfig: {
+    NumberTypeAttribute: "okb-numtype", // The attribute that indicates the number type
+    OverrideTypeAttribute: "okb-type", // The attribute that indicates the type
+  },
+});
+```
+
+## Goals
+
+## Language Support
+
+Currently only English is supported.
+
+| Language     | Supported |
+| ------------ | --------- |
+| English (US) | ✅        |
+
+## Technical Details
+
+This project is built with Vue 3 and TypeScript and uses Web Components to inject the keyboard into the DOM.
+
+## Dependencies
+
+- Node.JS 22 (fnm is recommended for managing Node versions)
+
+## License
+
+This project is licensed under the Mozilla Public License 2.0 - see the [LICENSE](LICENSE) file for details.

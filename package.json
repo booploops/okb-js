@@ -1,8 +1,19 @@
 {
   "name": "web-osk",
-  "private": true,
+  "private": false,
   "version": "1.0.0",
   "type": "module",
+  "license": "MPL-2.0",
+  "module": "dist/okb.es.js",
+  "types": "dist/okb.d.ts",
+  "main": "dist/okb.umd.js",
+  "exports": {
+    ".": {
+      "import": "./dist/okb.es.js",
+      "require": "./dist/okb.umd.js",
+      "types": "./dist/okb.d.ts"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
