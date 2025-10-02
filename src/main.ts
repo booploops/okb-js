@@ -10,9 +10,8 @@ import KeyboardSurface from "./components/KeyboardSurface.vue";
 import NumpadInput from "./components/NumpadInput.vue";
 import { bindKeyboard } from "./bind";
 import { keyboardConfig, targetElement, updateKeyboardLanguage } from "./state";
-import * as layouts from "./layouts";
+import layouts, { type Languages } from "./layouts";
 import type { KeyboardConfig } from "./types/KeyboardConfig";
-
 
 const keyboardSurface = defineCustomElement(KeyboardSurface, {
   shadowRoot: false,
@@ -31,4 +30,12 @@ function init(options: Partial<KeyboardConfig> = {}) {
   keyboardConfig.value.container.appendChild(keyboardElement);
 }
 
-export { keyboardElement, bindKeyboard, targetElement, init, keyboardConfig, layouts };
+export {
+  keyboardElement,
+  bindKeyboard,
+  targetElement,
+  init,
+  keyboardConfig,
+  layouts,
+  type Languages,
+};

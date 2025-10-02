@@ -8,8 +8,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { keyboardConfig, updateKeyboardLanguage } from '../state';
-import * as layouts from '../layouts';
-import type { Languages } from '../types/Languages';
+import layouts from '../layouts';
+import type { Languages } from '../layouts';
 
 const emit = defineEmits(['toggle-picker']);
 

@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import { merge } from "lodash-es";
-import type { Languages } from './Languages';
+import type { Languages } from "../layouts";
 
 export class KeyboardConfig {
   /** Whether the on-screen keyboard is enabled */

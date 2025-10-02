@@ -5,12 +5,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-import type { Languages } from '../types/Languages';
 
 export class KeyboardLayout {
     name: string = '';
     flag: string = '';
-    code: Languages = 'en-US';
+    code: string = 'en-US';
     normal: string[] = [];
     shift: string[] = [];
 

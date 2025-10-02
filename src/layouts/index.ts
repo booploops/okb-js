@@ -6,6 +6,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-export { default as 'en-US' } from "./en-US";
-export { default as 'es-ES' } from "./es-ES";
-export { default as 'ja-JP' } from "./ja-JP";
+import enUS from "./en-US";
+import esES from "./es-ES";
+import jaJP from "./ja-JP";
+import type { KeyboardLayout } from "./KeyboardLayout";
+
+const layouts: Record<string, KeyboardLayout> = {
+  "en-US": enUS,
+  "es-ES": esES,
+  "ja-JP": jaJP,
+};
+
+export type Languages = keyof typeof layouts | (string & {});
+export default layouts;

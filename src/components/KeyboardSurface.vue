@@ -11,8 +11,8 @@ import { numpadLayout } from '../layouts/numpad'
 import { ref, computed, watch, onUnmounted, onMounted } from 'vue';
 import { canSelectElement } from '../utils';
 import LanguagePicker from './LanguagePicker.vue';
-import * as layouts from '../layouts';
-import type { Languages } from '../types/Languages';
+import layouts from '../layouts';
+import type { Languages } from '../layouts';
 
 const previewInput = ref<HTMLInputElement>();
 const previewInputValue = ref('');
