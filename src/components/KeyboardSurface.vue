@@ -12,7 +12,7 @@ import { ref, computed, watch, onUnmounted, onMounted } from 'vue';
 import { canSelectElement } from '../utils';
 import LanguagePicker from './LanguagePicker.vue';
 import * as layouts from '../layouts';
-
+import type { Languages } from '../types/Languages';
 
 const previewInput = ref<HTMLInputElement>();
 const previewInputValue = ref('');
@@ -213,7 +213,7 @@ function toggleLanguagePicker() {
     showLanguagePicker.value = !showLanguagePicker.value;
 }
 
-function selectLanguage(languageCode: string) {
+function selectLanguage(languageCode: Languages) {
     keyboardConfig.value.language = languageCode;
     updateKeyboardLanguage();
     showLanguagePicker.value = false;

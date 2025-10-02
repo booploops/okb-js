@@ -9,6 +9,7 @@
 import { computed } from 'vue';
 import { keyboardConfig, updateKeyboardLanguage } from '../state';
 import * as layouts from '../layouts';
+import type { Languages } from '../types/Languages';
 
 const emit = defineEmits(['toggle-picker']);
 
@@ -24,7 +25,7 @@ function togglePicker() {
   emit('toggle-picker');
 }
 
-function selectLanguage(languageCode: string) {
+function selectLanguage(languageCode: Languages) {
   keyboardConfig.value.language = languageCode;
   updateKeyboardLanguage();
   emit('toggle-picker'); // Close picker after selection

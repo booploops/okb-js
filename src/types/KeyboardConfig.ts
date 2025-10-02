@@ -6,11 +6,12 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import { merge } from "lodash-es";
+import type { Languages } from './Languages';
 
 export class KeyboardConfig {
   enabled = true;
   theme: string = "dark";
-  language: string = "en-US";
+  language: Languages = "en-US";
   debug: boolean = false;
   autoCapitalizeOnEmpty: boolean = true;
   allowSwitchLanguage: boolean = true;

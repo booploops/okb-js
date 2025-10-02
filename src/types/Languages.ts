@@ -5,7 +5,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+import type * as layouts from '../layouts';
 
-export { default as 'en-US' } from "./en-US";
-export { default as 'es-ES' } from "./es-ES";
-export { default as 'ja-JP' } from "./ja-JP";
+export type Languages = keyof typeof layouts;
