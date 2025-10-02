@@ -1059,18 +1059,10 @@ onUnmounted(() => {
     justify-content: center;
     cursor: pointer;
     transition: background 0.2s;
-
-    &:hover {
-        background: var(--md-sys-color-surface-variant);
-    }
 }
 
 .keyboard-container.dark .close-picker {
     color: var(--md-sys-color-on-surface-dark);
-
-    &:hover {
-        background: var(--md-sys-color-surface-variant-dark);
-    }
 }
 
 .language-options {
@@ -1093,11 +1085,6 @@ onUnmounted(() => {
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
     font-size: 1rem;
-
-    &:hover {
-        background: var(--md-sys-color-primary-container);
-        color: var(--md-sys-color-on-primary-container);
-    }
 
     &.selected {
         background: var(--md-sys-color-primary-container);
@@ -1124,11 +1111,6 @@ onUnmounted(() => {
 .keyboard-container.dark .language-option-btn {
     background: var(--md-sys-color-surface-variant-dark);
     color: var(--md-sys-color-on-surface-dark);
-
-    &:hover {
-        background: var(--md-sys-color-primary-container-dark);
-        color: var(--md-sys-color-on-primary-container-dark);
-    }
 
     &.selected {
         background: var(--md-sys-color-primary-container-dark);
