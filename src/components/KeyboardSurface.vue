@@ -11,6 +11,7 @@ import { numpadLayout } from '../layouts/numpad'
 import { ref, computed, watch, onUnmounted, onMounted } from 'vue';
 import { canSelectElement } from '../utils';
 import LanguagePicker from './LanguagePicker.vue';
+import * as layouts from '../layouts';
 
 
 const previewInput = ref<HTMLInputElement>();
@@ -563,11 +564,7 @@ onUnmounted(() => {
                 </div>
                 <div class="language-options">
                     <button
-                        v-for="language in [
-                            { code: 'en-US', name: 'English', flag: '🇺🇸' },
-                            { code: 'es-ES', name: 'Español', flag: '🇪🇸' },
-                            { code: 'ja-JP', name: '日本語', flag: '🇯🇵' }
-                        ]"
+                        v-for="language in Object.values(layouts)"
                         :key="language.code"
                         class="language-option-btn"
                         :class="{ 'selected': language.code === keyboardConfig.language }"
