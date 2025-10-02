@@ -9,6 +9,8 @@ export class KeyboardLayout {
     normal: string[] = [];
     shift: string[] = [];
 
+    keyboardClasses: string[] = [];
+
     constructor(args: Partial<KeyboardLayout> = {}) {
         Object.assign(this, args);
     }

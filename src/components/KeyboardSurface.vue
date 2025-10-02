@@ -259,7 +259,7 @@ function updateTargetFromPreview() {
 
 function handleClickOutside(event: MouseEvent) {
 
-    if(!keyboardConfig.value.enabled) return;
+    if (!keyboardConfig.value.enabled) return;
 
     const keyboardContainer = document.querySelector('.keyboard-container');
     const clickedElement = event.target as HTMLElement;
@@ -371,10 +371,13 @@ onUnmounted(() => {
 <template>
     <div
         class="keyboard-container"
-        :class="{
-            'opened': targetElement,
-            'dark': true,
-        }"
+        :class="[
+            {
+                'opened': targetElement,
+                'dark': true,
+            },
+            currentKeyboardLanguage?.keyboardClasses
+        ]"
     >
         <div
             class="keyboard-preview"
@@ -495,7 +498,10 @@ onUnmounted(() => {
                             >
                                 <span>Space</span>
                             </button>
-                            <LanguagePicker @toggle-picker="toggleLanguagePicker" v-if="keyboardConfig.allowSwitchLanguage" />
+                            <LanguagePicker
+                                @toggle-picker="toggleLanguagePicker"
+                                v-if="keyboardConfig.allowSwitchLanguage"
+                            />
                             <button
                                 class="keyboard-key done-key"
                                 @click="targetElement = undefined"
@@ -525,12 +531,29 @@ onUnmounted(() => {
             </div>
 
             <!-- Language Picker Overlay -->
-            <div class="language-picker-overlay" v-if="showLanguagePicker" @click.stop>
+            <div
+                class="language-picker-overlay"
+                v-if="showLanguagePicker"
+                @click.stop
+            >
                 <div class="language-picker-header">
                     <h3>Select Language</h3>
-                    <button class="close-picker" @click.stop="showLanguagePicker = false">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <button
+                        class="close-picker"
+                        @click.stop="showLanguagePicker = false"
+                    >
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+                            <path
+                                d="M18 6L6 18M6 6l12 12"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                            />
                         </svg>
                     </button>
                 </div>
@@ -775,6 +798,10 @@ onUnmounted(() => {
     position: relative;
     transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    .small-key-height & {
+        height: 2rem;
+    }
 
     /* Material 3 state layer */
     &::before {
