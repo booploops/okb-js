@@ -123,8 +123,6 @@ OKB.init({
 
 ## Language Support
 
-Currently only English (US) is supported.
-
 | Language      | Supported | Notes                |
 | ------------- | --------- | -------------------- |
 | English (US)  | ✅        | The default language |
