@@ -495,7 +495,7 @@ onUnmounted(() => {
                             >
                                 <span>Space</span>
                             </button>
-                            <LanguagePicker @toggle-picker="toggleLanguagePicker" />
+                            <LanguagePicker @toggle-picker="toggleLanguagePicker" v-if="keyboardConfig.allowSwitchLanguage" />
                             <button
                                 class="keyboard-key done-key"
                                 @click="targetElement = undefined"

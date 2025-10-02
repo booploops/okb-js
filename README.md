@@ -99,6 +99,7 @@ OKB.init({
   theme: "dark", // The theme of the keyboard
   language: "en-US", // The language of the keyboard
   autoCapitalizeOnEmpty: true, // Whether to automatically capitalize the first letter of the input
+  allowSwitchLanguage: true, // Allows the user to switch the language using the language picker
   allowedInputTypes: [
     "text",
     "password",

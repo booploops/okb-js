@@ -12,6 +12,7 @@ export class KeyboardConfig {
   theme: string = "dark";
   language: string = "en-US";
   autoCapitalizeOnEmpty: boolean = true;
+  allowSwitchLanguage: boolean = true;
   allowedInputTypes = [
     "text",
     "password",
