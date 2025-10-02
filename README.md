@@ -125,9 +125,11 @@ OKB.init({
 
 Currently only English (US) is supported.
 
-| Language     | Supported | Notes                |
-| ------------ | --------- | -------------------- |
-| English (US) | ✅        | The default language |
+| Language      | Supported | Notes                |
+| ------------- | --------- | -------------------- |
+| English (US)  | ✅        | The default language |
+| Spanish (ES)  | ✅        |                      |
+| Japanese (JP) | ⚠️        | WIP Partial Support  |
 
 ## Technical Details
 
