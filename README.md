@@ -135,10 +135,6 @@ This project is built with Vue 3 and TypeScript and uses Web Components to injec
 
 The web component itself has the Shadow DOM disabled, so it can be styled with CSS.
 
-## Dependencies
-
-- Node.JS 22 (fnm is recommended for managing Node versions)
-
 ## License
 
 This project is licensed under the Mozilla Public License 2.0 - see the [LICENSE](LICENSE) file for details.
