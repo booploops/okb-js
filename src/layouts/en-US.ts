@@ -8,6 +8,9 @@
 import { KeyboardLayout } from "./KeyboardLayout";
 
 export default new KeyboardLayout({
+    name: 'English',
+    flag: '🇺🇸',
+    code: 'en-US',
     normal: [
         "1 2 3 4 5 6 7 8 9 0",
         "q w e r t y u i o p",
@@ -19,5 +22,6 @@ export default new KeyboardLayout({
         "Q W E R T Y U I O P",
         "A S D F G H J K L",
         "Z X C V B N M",
-    ]
+    ],
+    shiftLock: false
 });

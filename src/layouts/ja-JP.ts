@@ -14,7 +14,11 @@
 import { KeyboardLayout } from "./KeyboardLayout";
 
 export default new KeyboardLayout({
+    name: '日本語',
+    flag: '🇯🇵',
+    code: 'ja-JP',
     keyboardClasses: ['small-key-height'],
+    shiftLock: true,
     normal: [
         "あ い う え お わ を ん ー 〜",
         "か き く け こ が ぎ ぐ げ ご",

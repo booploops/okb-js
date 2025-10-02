@@ -8,17 +8,16 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { keyboardConfig, updateKeyboardLanguage } from '../state';
+import * as layouts from '../layouts';
 
 const emit = defineEmits(['toggle-picker']);
 
-const languages = [
-  { code: 'en-US', name: 'English', flag: '🇺🇸' },
-  { code: 'es-ES', name: 'Español', flag: '🇪🇸' },
-  { code: 'ja-JP', name: '日本語', flag: '🇯🇵' }
-];
+const languages = computed(() => {
+  return Object.values(layouts);
+})
 
 const currentLanguage = computed(() => {
-  return languages.find(lang => lang.code === keyboardConfig.value.language) || languages[0];
+  return languages.value.find(lang => lang.code === keyboardConfig.value.language) || languages.value[0];
 });
 
 function togglePicker() {
@@ -31,7 +30,7 @@ function selectLanguage(languageCode: string) {
   emit('toggle-picker'); // Close picker after selection
 }
 
-defineExpose({ languages, currentLanguage, selectLanguage });
+defineExpose({ languages: languages.value, currentLanguage, selectLanguage });
 </script>
 
 <template>

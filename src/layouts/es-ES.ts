@@ -12,6 +12,9 @@
 import { KeyboardLayout } from "./KeyboardLayout";
 
 export default new KeyboardLayout({
+    name: 'Español',
+    flag: '🇪🇸',
+    code: 'es-ES',
     normal: [
         "1 2 3 4 5 6 7 8 9 0",
         "q w e r t y u i o p",

@@ -127,7 +127,9 @@ function onKeyPress(key: string) {
 
         // Keep focus on textarea
         textarea.focus();
-        isShifted.value = false;
+        if (!currentKeyboardLanguage.value.shiftLock) {
+            isShifted.value = false;
+        }
         return;
     }
 
@@ -185,7 +187,9 @@ function onKeyPress(key: string) {
     previewInputValue.value = beforeCursor + charToInsert + afterCursor;
     caretPosition.value = cursorPos + 1;
     updateTargetFromPreview();
-    isShifted.value = false;
+    if (!currentKeyboardLanguage.value.shiftLock) {
+        isShifted.value = false;
+    }
 }
 
 function formatAutoDecimal(digits: string) {

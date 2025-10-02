@@ -6,10 +6,17 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 export class KeyboardLayout {
+    name: string = '';
+    flag: string = '';
+    code: string = '';
     normal: string[] = [];
     shift: string[] = [];
 
     keyboardClasses: string[] = [];
+    /**
+     * If enabled, the shift key will lock the shift state until the shift key is pressed again.
+     */
+    shiftLock: boolean = false;
 
     constructor(args: Partial<KeyboardLayout> = {}) {
         Object.assign(this, args);
