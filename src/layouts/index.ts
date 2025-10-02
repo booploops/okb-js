@@ -9,9 +9,8 @@
 import enUS from "./en-US";
 import esES from "./es-ES";
 import jaJP from "./ja-JP";
-import type { KeyboardLayout } from "./KeyboardLayout";
 
-const layouts: Record<string, KeyboardLayout> = {
+const layouts = {
   "en-US": enUS,
   "es-ES": esES,
   "ja-JP": jaJP,
