@@ -27,7 +27,6 @@ const keyboardElement = document.createElement("keyboard-surface");
 function init(options: Partial<KeyboardConfig> = {}) {
   keyboardConfig.value.merge(options);
   updateKeyboardLanguage(); // Update keyboard layout based on language
-  console.log(keyboardConfig.value);
   keyboardConfig.value.container.appendChild(keyboardElement);
 }
 

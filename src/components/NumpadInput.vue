@@ -8,6 +8,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import InlineNumPad from './Numpad.vue';
+import { keyboardConfig } from '../state';
 
 const props = defineProps<{
     targetElement?: HTMLInputElement;
@@ -64,14 +65,18 @@ const onInput = (value: string) => {
     if (!targetElement.value) return;
     
     const currentValue = targetElement.value.value || '';
-    console.log('onInput called with:', value, 'current value:', currentValue);
+    if (keyboardConfig.value.debug) {
+        console.log('onInput called with:', value, 'current value:', currentValue);
+    }
     
     if (props.decimal) {
         // Only allow digits
         if (/^\d$/.test(value)) {
             let digits = currentValue.replace(/\D/g, '') + value;
             const newValue = formatAutoDecimal(digits);
-            console.log('Decimal mode - digits:', digits, 'formatted:', newValue);
+            if (keyboardConfig.value.debug) {
+                console.log('Decimal mode - digits:', digits, 'formatted:', newValue);
+            }
             targetElement.value.value = newValue;
             dispatchEvents();
         }
@@ -79,7 +84,9 @@ const onInput = (value: string) => {
         return;
     } else {
         const newValue = currentValue + value;
-        console.log('Non-decimal mode - current:', currentValue, 'adding:', value, 'result:', newValue);
+        if (keyboardConfig.value.debug) {
+            console.log('Non-decimal mode - current:', currentValue, 'adding:', value, 'result:', newValue);
+        }
         targetElement.value.value = newValue;
         dispatchEvents();
     }
@@ -89,18 +96,24 @@ const onBackspace = () => {
     if (!targetElement.value) return;
     
     const currentValue = targetElement.value.value || '';
-    console.log('onBackspace called, current value:', currentValue);
+    if (keyboardConfig.value.debug) {
+        console.log('onBackspace called, current value:', currentValue);
+    }
     
     if (props.decimal) {
         let digits = currentValue.replace(/\D/g, '');
         digits = digits.slice(0, -1);
         const newValue = formatAutoDecimal(digits);
-        console.log('Decimal backspace - digits:', digits, 'formatted:', newValue);
+        if (keyboardConfig.value.debug) {
+            console.log('Decimal backspace - digits:', digits, 'formatted:', newValue);
+        }
         targetElement.value.value = newValue;
         dispatchEvents();
     } else {
         const newValue = currentValue.slice(0, -1);
-        console.log('Non-decimal backspace - current:', currentValue, 'result:', newValue);
+        if (keyboardConfig.value.debug) {
+            console.log('Non-decimal backspace - current:', currentValue, 'result:', newValue);
+        }
         targetElement.value.value = newValue;
         dispatchEvents();
     }

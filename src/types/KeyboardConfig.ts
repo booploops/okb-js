@@ -11,6 +11,7 @@ export class KeyboardConfig {
   enabled = true;
   theme: string = "dark";
   language: string = "en-US";
+  debug: boolean = false;
   autoCapitalizeOnEmpty: boolean = true;
   allowSwitchLanguage: boolean = true;
   allowedInputTypes = [
