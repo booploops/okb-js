@@ -1,10 +1,12 @@
+<img width="1280" height="640" alt="Open Keyboard Banner" src="https://github.com/user-attachments/assets/c64f5871-b23f-45ec-b0de-f880e601ba91" />
+
 # okb-js
 
 **This project is still in early development.**
 
-okb-js (short for Open Keyboard JS) is an easy to use drop-in On Screen Keyboard for web based applications.
+okb-js (short for Open Keyboard JS) is a simple drop-in On Screen Keyboard for web based applications.
 
-This project was created out of a need for an on-screen keyboard for kiosk like environments, where the keyboard is not always available or provided by the operating system.
+This project was created out of a need for an on-screen keyboard for kiosk like environments, where the keyboard is not always available or provided by the operating system for `<input>` and `<textarea>` fields.
 
 It is intended to be extremely portable, framework agnostic, and can be used in a variety of different environments. All from a single file.
 
