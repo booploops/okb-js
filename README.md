@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 ```
 
-**IIFE** (CDN)
+**IIFE**
 
 ```html
 <script src="path/to/okb.iife.js"></script>
@@ -47,6 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
     OKB.init();
   });
 </script>
+```
+
+The IIFE version can be used directly from a CDN via a script tag.
+```html
+<script src="https://unpkg.com/okb-js@latest/dist/okb.iife.js"></script>
 ```
 
 ### Ignored Elements
