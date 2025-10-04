@@ -10,6 +10,18 @@ It is intended to be extremely portable, framework agnostic, and can be used in 
 
 okb-js is compiled for **ESM**, **IIFE** and **UMD** formats.
 
+## Installation
+
+```sh
+pnpm add okb-js
+# or
+npm install okb-js
+# or
+yarn add okb-js
+```
+
+## CDN
+
 ## Usage Examples
 
 ### Enabling the keyboard for the entire DOM

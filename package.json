@@ -1,5 +1,23 @@
 {
   "name": "okb-js",
+  "author": "booploops",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/booploops/okb-js"
+  },
+  "homepage": "https://github.com/booploops/okb-js",
+  "bugs": {
+    "url": "https://github.com/booploops/okb-js/issues"
+  },
+  "keywords": [
+    "keyboard",
+    "osk",
+    "on-screen",
+    "onscreen",
+    "onscreen-keyboard",
+    "onscreen-keyboard-js"
+  ],
+  "description": "An easy to use drop-in On Screen Keyboard for web based applications.",
   "version": "1.0.0",
   "type": "module",
   "license": "MPL-2.0",
