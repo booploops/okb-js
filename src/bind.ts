@@ -5,10 +5,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+import { watch } from "vue";
 import { keyboardConfig, targetElement } from "./main";
 import { canSelectElement, isWithinKeyboardElement } from "./utils";
+import { resetViewportPan, viewportPan } from "./viewport-pan";
 
 export function bindKeyboard(doc: Document) {
+  watch(targetElement, (newTargetElement) => {
+    if (keyboardConfig.value.fixedViewport) {
+      if (newTargetElement) {
+        viewportPan({
+          targetElement: newTargetElement,
+          viewportElement: document.querySelector(
+            "#fixed-viewport"
+          ) as HTMLElement,
+        });
+        return;
+      }
+      resetViewportPan(
+        document.querySelector("#fixed-viewport") as HTMLElement
+      );
+    }
+  });
+
   doc.addEventListener("keydown", () => {
     if (!keyboardConfig.value.enabled) return;
     targetElement.value = undefined;

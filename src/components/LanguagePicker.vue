@@ -36,7 +36,7 @@ defineExpose({ languages: languages.value, currentLanguage, selectLanguage });
 
 <template>
   <button
-    class="language-picker-button keyboard-key"
+    class="keyboard-key language-picker-button"
     @click.stop="togglePicker"
   >
     <span class="flag">{{ currentLanguage.flag }}</span>
@@ -45,6 +45,8 @@ defineExpose({ languages: languages.value, currentLanguage, selectLanguage });
 
 <style lang="scss" scoped>
 .language-picker-button {
+  width: 20px !important;
+
   .flag {
     font-size: 1.5rem;
   }

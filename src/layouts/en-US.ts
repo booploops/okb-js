@@ -9,7 +9,7 @@ import { KeyboardLayout } from "./KeyboardLayout";
 
 export default new KeyboardLayout({
     name: 'English',
-    flag: '🇺🇸',
+    flag: 'EN',
     code: 'en-US',
     normal: [
         "1 2 3 4 5 6 7 8 9 0",

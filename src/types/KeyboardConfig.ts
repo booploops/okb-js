@@ -47,6 +47,11 @@ export class KeyboardConfig {
   /** The DOM container element where the keyboard will be rendered */
   container: HTMLElement = document.body;
 
+  /**
+   * When using a fixed viewport, the keyboard can pan the viewport to bring the target element into view if it's behind the keyboard
+   */
+  fixedViewport: string | HTMLElement | undefined;
+
   /** Configuration for custom data attributes used by the keyboard */
   attributeConfig = {
     /** Attribute name for specifying number input type behavior */
