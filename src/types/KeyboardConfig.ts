@@ -12,8 +12,15 @@ export class KeyboardConfig {
   /** Whether the on-screen keyboard is enabled */
   enabled = true;
   
-  /** The visual theme of the keyboard ("dark" or "light") */
+  /** 
+   * The visual theme of the keyboard ("dark" or "light") 
+   * 
+   * @todo Implement stock light and dark theme
+   */
   theme: string = "dark";
+
+  /** Additional classes to add to the keyboard container */
+  keyboardClasses: string[] = [];
   
   /** The language/locale for the keyboard layout */
   language: Languages = "en-US";

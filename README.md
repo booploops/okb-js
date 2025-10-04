@@ -108,7 +108,6 @@ Alternatively, if the iframe has adequate privileges, the frame can request `bin
 OKB.init({
   // or simply init() when imported as a module
   enabled: true, // Whether the keyboard is enabled
-  theme: "dark", // The theme of the keyboard
   language: "en-US", // The language of the keyboard
   autoCapitalizeOnEmpty: true, // Whether to automatically capitalize the first letter of the input
   allowSwitchLanguage: true, // Allows the user to switch the language using the language picker

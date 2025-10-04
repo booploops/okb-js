@@ -418,7 +418,8 @@ onUnmounted(() => {
                 'opened': targetElement,
                 'dark': true,
             },
-            currentKeyboardLanguage?.keyboardClasses
+            currentKeyboardLanguage?.keyboardClasses,
+            keyboardConfig.keyboardClasses
         ]"
     >
         <div
