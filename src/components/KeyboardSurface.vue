@@ -246,7 +246,7 @@ function updateTargetFromPreview() {
         // Don't set value directly - let dispatchEvents handle it for React compatibility
         // Set value using React-compatible method
         dispatchEvents(previewInputValue.value);
-        
+
         // Sync cursor position to target element AFTER setting value
         if (inputType.value !== 'number') {
             targetElement.value.setSelectionRange(caretPosition.value, caretPosition.value);
@@ -332,7 +332,7 @@ function dispatchEvents(newValue: string) {
         // React tracks input values internally and needs special handling
         // We use the native property descriptor and dispatch events that React listens to
         const element = targetElement.value;
-        
+
         // Get the native value setter
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
             window.HTMLInputElement.prototype,
@@ -363,7 +363,14 @@ function dispatchEvents(newValue: string) {
         element.dispatchEvent(changeEvent);
 
         // Keyup event for any other listeners
-        const keyupEvent = new Event('keyup', { bubbles: true });
+        const keyupEvent = new KeyboardEvent('keyup', {
+            key: '',
+            code: '',
+            keyCode: 0,
+            which: 0,
+            bubbles: true,
+            cancelable: true
+        });
         element.dispatchEvent(keyupEvent);
     }
 }
