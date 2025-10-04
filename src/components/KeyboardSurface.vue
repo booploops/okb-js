@@ -92,43 +92,40 @@ function onKeyPress(key: string) {
         const hasSelection = cursorPos !== selectionEnd;
         const textBefore = textarea.value.substring(0, cursorPos);
         const textAfter = textarea.value.substring(selectionEnd);
+        let newValue = '';
+        let newCursorPos = cursorPos;
 
         if (key === 'ENTER') {
-            textarea.value = textBefore + '\n' + textAfter;
-            textarea.setSelectionRange(cursorPos + 1, cursorPos + 1);
-            caretPosition.value = cursorPos + 1;
-            // Keep focus on textarea
-            textarea.focus();
-            return;
-        }
-
-        if (key === 'BACKSPACE' || key === '⌫') {
+            newValue = textBefore + '\n' + textAfter;
+            newCursorPos = cursorPos + 1;
+        } else if (key === 'BACKSPACE' || key === '⌫') {
             if (hasSelection) {
                 // Delete selected text
-                textarea.value = textBefore + textAfter;
-                textarea.setSelectionRange(cursorPos, cursorPos);
-                caretPosition.value = cursorPos;
+                newValue = textBefore + textAfter;
+                newCursorPos = cursorPos;
             } else if (cursorPos > 0) {
                 // Delete one character before cursor
-                textarea.value = textarea.value.substring(0, cursorPos - 1) + textAfter;
-                textarea.setSelectionRange(cursorPos - 1, cursorPos - 1);
-                caretPosition.value = cursorPos - 1;
+                newValue = textarea.value.substring(0, cursorPos - 1) + textAfter;
+                newCursorPos = cursorPos - 1;
+            } else {
+                // No change
+                return;
             }
-            // Keep focus on textarea
-            textarea.focus();
-            return;
+        } else {
+            // Regular key press
+            let charToInsert = key;
+            newValue = textBefore + charToInsert + textAfter;
+            newCursorPos = cursorPos + 1;
         }
 
-        let charToInsert = key;
-
-        // Regular key press
-        textarea.value = textBefore + charToInsert + textAfter;
-        textarea.setSelectionRange(cursorPos + 1, cursorPos + 1);
-        caretPosition.value = cursorPos + 1;
+        // Use native setter and dispatch events for React compatibility
+        dispatchEvents(newValue);
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+        caretPosition.value = newCursorPos;
 
         // Keep focus on textarea
         textarea.focus();
-        if (!currentKeyboardLanguage.value.shiftLock) {
+        if (!currentKeyboardLanguage.value.shiftLock && key !== 'ENTER' && key !== 'BACKSPACE' && key !== '⌫') {
             isShifted.value = false;
         }
         return;
@@ -246,8 +243,11 @@ function bindTargetToPreview() {
 
 function updateTargetFromPreview() {
     if (previewInput.value && targetElement.value) {
-        targetElement.value.value = previewInputValue.value;
-        // Sync cursor position to target element
+        // Don't set value directly - let dispatchEvents handle it for React compatibility
+        // Set value using React-compatible method
+        dispatchEvents(previewInputValue.value);
+        
+        // Sync cursor position to target element AFTER setting value
         if (inputType.value !== 'number') {
             targetElement.value.setSelectionRange(caretPosition.value, caretPosition.value);
             // Also update preview input cursor position
@@ -258,7 +258,6 @@ function updateTargetFromPreview() {
         if (isTextArea.value) {
             previewInput.value.focus();
         }
-        dispatchEvents();
     }
 }
 
@@ -324,17 +323,48 @@ watch(() => keyboardConfig.value.language, () => {
 });
 
 
-function dispatchEvents() {
+function dispatchEvents(newValue: string) {
     if (targetElement.value) {
+        /**
+         * React onChange event
+         * This has to be done differently because of the way React handles events
+         */
+        // React tracks input values internally and needs special handling
+        // We use the native property descriptor and dispatch events that React listens to
+        const element = targetElement.value;
+        
+        // Get the native value setter
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype,
+            'value'
+        )?.set;
+        const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(
+            window.HTMLTextAreaElement.prototype,
+            'value'
+        )?.set;
+
+        if (element instanceof HTMLInputElement && nativeInputValueSetter) {
+            // Use native setter to set the value - this bypasses React's tracking
+            nativeInputValueSetter.call(element, newValue);
+        } else if (element instanceof HTMLTextAreaElement && nativeTextAreaValueSetter) {
+            // Use native setter for textarea
+            nativeTextAreaValueSetter.call(element, newValue);
+        } else {
+            // Fallback for other element types
+            element.value = newValue;
+        }
+
+        // Dispatch native events
         const inputEvent = new Event('input', { bubbles: true });
-        targetElement.value.dispatchEvent(inputEvent);
+        element.dispatchEvent(inputEvent);
 
-        const keyupEvent = new Event('keyup', { bubbles: true });
-        targetElement.value.dispatchEvent(keyupEvent);
-
+        // Also dispatch change event for frameworks that use it (everyone but React)
         const changeEvent = new Event('change', { bubbles: true });
-        targetElement.value.dispatchEvent(changeEvent);
+        element.dispatchEvent(changeEvent);
 
+        // Keyup event for any other listeners
+        const keyupEvent = new Event('keyup', { bubbles: true });
+        element.dispatchEvent(keyupEvent);
     }
 }
 
