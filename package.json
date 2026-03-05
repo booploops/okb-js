@@ -18,7 +18,7 @@
     "onscreen-keyboard-js"
   ],
   "description": "An easy to use drop-in On Screen Keyboard for web based applications.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "license": "MPL-2.0",
   "module": "dist/okb.es.js",
