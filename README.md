@@ -39,6 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 ```
 
+The ESM version can be used directly from a CDN via a script tag.
+```html
+<script type="module">
+import { bindKeyboard, init } from "https://cdn.jsdelivr.net/npm/okb-js/+esm";
+
+// Init here
+</script>
+```
+
 **IIFE**
 
 ```html
@@ -54,6 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
 The IIFE version can be used directly from a CDN via a script tag.
 ```html
 <script src="https://unpkg.com/okb-js@latest/dist/okb.iife.js"></script>
+<script>
+// Init here
+</script>
 ```
 
 ### Ignored Elements
