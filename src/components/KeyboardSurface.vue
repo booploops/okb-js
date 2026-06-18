@@ -400,6 +400,53 @@ function updateCaretPosition() {
     }
 }
 
+function handlePointerDown(event: PointerEvent) {
+    const button = (event.target as HTMLElement).closest('.keyboard-key');
+    if (button) {
+        button.classList.add('key-pressed');
+        try {
+            button.setPointerCapture(event.pointerId);
+        } catch (err) {
+            // Ignore if pointer capture fails
+        }
+    }
+}
+
+function handlePointerUp(event: PointerEvent) {
+    const button = (event.target as HTMLElement).closest('.keyboard-key');
+    if (button) {
+        button.classList.remove('key-pressed');
+        try {
+            button.releasePointerCapture(event.pointerId);
+        } catch (err) {
+            // Ignore
+        }
+    }
+}
+
+function handlePointerCancel(event: PointerEvent) {
+    const button = (event.target as HTMLElement).closest('.keyboard-key');
+    if (button) {
+        button.classList.remove('key-pressed');
+        try {
+            button.releasePointerCapture(event.pointerId);
+        } catch (err) {
+            // Ignore
+        }
+    }
+}
+
+function clearAllPressedKeys() {
+    const pressedKeys = document.querySelectorAll('.keyboard-key.key-pressed');
+    pressedKeys.forEach((key) => {
+        key.classList.remove('key-pressed');
+    });
+}
+
+watch([isShifted, showSymbols, targetElement], () => {
+    clearAllPressedKeys();
+});
+
 onMounted(() => {
     window.addEventListener('click', handleClickOutside);
 })
@@ -477,6 +524,9 @@ onUnmounted(() => {
             :class="{
                 'numpad': isNumpad,
             }"
+            @pointerdown="handlePointerDown"
+            @pointerup="handlePointerUp"
+            @pointercancel="handlePointerCancel"
         >
             <div class="keyboard">
                 <div class="keyboard-layout">
@@ -855,14 +905,6 @@ onUnmounted(() => {
         opacity: 0;
         transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         pointer-events: none;
-    }
-
-    &:active {
-        transform: scale(0.96);
-
-        &::before {
-            opacity: 0.12;
-        }
     }
 
     &:disabled {
