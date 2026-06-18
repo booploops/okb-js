@@ -559,7 +559,7 @@ onUnmounted(() => {
                                 </button>
                             </template>
                             <button
-                                class="keyboard-key"
+                                class="keyboard-key standard-key"
                                 v-for="(key, keyIndex) in row"
                                 :key="keyIndex"
                                 :disabled="numpadAutoDecimal && isNumpad && key === '.'"
@@ -670,6 +670,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .keyboard-container {
+    --key-gap: 0.375rem;
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -862,7 +863,7 @@ onUnmounted(() => {
 .keyboard-row {
     display: flex;
     justify-content: center;
-    gap: 0.375rem;
+    gap: var(--key-gap);
     width: 100%;
     flex-wrap: nowrap;
     overflow: hidden;
@@ -936,6 +937,18 @@ onUnmounted(() => {
 .special-keys .keyboard-key {
     flex-grow: 1;
     flex-basis: 0;
+}
+
+.keyboard-surface:not(.numpad) {
+    .standard-key {
+        flex: 0 0 calc((100% - 10 * var(--key-gap)) / 11.5);
+        min-width: 0;
+    }
+
+    .shift-key {
+        flex: 1 1 0;
+        min-width: 3rem;
+    }
 }
 
 .space-bar {
@@ -1059,6 +1072,10 @@ onUnmounted(() => {
 }
 
 @media (max-width: 500px) {
+    .keyboard-container {
+        --key-gap: 0.25rem;
+    }
+
     .keyboard {
         max-width: 100vw;
         padding: 0.75rem 1rem 1rem 1rem;
@@ -1085,7 +1102,7 @@ onUnmounted(() => {
     }
 
     .keyboard-main .keyboard-row {
-        gap: 0.25rem;
+        gap: var(--key-gap);
     }
 
     /* Ensure bottom row fits on small screens */
