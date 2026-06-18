@@ -671,11 +671,26 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .keyboard-container {
     --key-gap: 0.375rem;
+    --kb-key-radius: 0.35rem;
+
+    /* iPadOS Light Theme variables */
+    --kb-bg: #d5d8dd;
+    --kb-key-bg: #ffffff;
+    --kb-key-text: #000000;
+    --kb-key-shadow: 0 1px 0px rgba(0, 0, 0, 0.3);
+    --kb-special-key-bg: #acb3bc;
+    --kb-special-key-text: #000000;
+    --kb-action-bg: #007aff;
+    --kb-action-text: #ffffff;
+    --kb-active-key-bg: #e0e0e0;
+    --kb-active-special-key-bg: #ffffff;
+
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
-    background: var(--md-sys-color-surface-container);
+    background: var(--kb-bg);
+    color: var(--kb-key-text);
     align-items: center;
     gap: 0.5rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
@@ -706,31 +721,23 @@ onUnmounted(() => {
         appearance: none;
         font-family: inherit;
     }
-
-    /* Material 3 color variables */
-    --md-sys-color-surface-container: #f7f2fa;
-    --md-sys-color-surface-container-dark: #1d1b20;
-    --md-sys-color-on-surface: #1c1b1f;
-    --md-sys-color-on-surface-dark: #e6e0e9;
-    --md-sys-color-surface-variant: #e7e0ec;
-    --md-sys-color-surface-variant-dark: #49454f;
-    --md-sys-color-on-surface-variant: #49454f;
-    --md-sys-color-on-surface-variant-dark: #cac4d0;
-    --md-sys-color-primary: #6750a4;
-    --md-sys-color-primary-dark: color-mix(in srgb, #6750a4 80%, white);
-    --md-sys-color-primary-container: color-mix(in srgb, #6750a4 20%, white);
-    --md-sys-color-primary-container-dark: color-mix(in srgb, #6750a4 60%, black);
-    --md-sys-color-on-primary-container: color-mix(in srgb, #6750a4 90%, black);
-    --md-sys-color-on-primary-container-dark: color-mix(in srgb, #6750a4 20%, white);
-    --md-sys-color-secondary: #625b71;
-    --md-sys-color-secondary-dark: #cbc2db;
-    --md-sys-color-outline: #79747e;
-    --md-sys-color-outline-dark: #938f99;
 }
 
 .keyboard-container.dark {
-    background: var(--md-sys-color-surface-container-dark);
-    color: var(--md-sys-color-on-surface-dark);
+    /* iPadOS Dark Theme variables */
+    --kb-bg: #161617;
+    --kb-key-bg: #636366;
+    --kb-key-text: #ffffff;
+    --kb-key-shadow: 0 1px 0px rgba(0, 0, 0, 0.5);
+    --kb-special-key-bg: #3a3a3c;
+    --kb-special-key-text: #ffffff;
+    --kb-action-bg: #0a84ff;
+    --kb-action-text: #ffffff;
+    --kb-active-key-bg: #7c7c80;
+    --kb-active-special-key-bg: #48484a;
+
+    background: var(--kb-bg);
+    color: var(--kb-key-text);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.32);
 
     .clear-btn-inline {
@@ -740,7 +747,7 @@ onUnmounted(() => {
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: var(--md-sys-color-on-surface-variant-dark);
+        color: rgba(255, 255, 255, 0.5);
         padding: 0.75rem;
         border-radius: 50%;
         display: flex;
@@ -754,7 +761,7 @@ onUnmounted(() => {
         }
 
         &:active {
-            background: rgba(208, 188, 255, 0.12);
+            background: rgba(255, 255, 255, 0.12);
         }
     }
 }
@@ -774,19 +781,19 @@ onUnmounted(() => {
     width: 100%;
     max-width: 100vw;
     box-sizing: border-box;
-    padding: 1rem 1.25rem;
+    padding: 0.75rem 1.25rem;
     font-size: 1.1rem;
-    border-radius: 1rem;
-    border: 1px solid var(--md-sys-color-outline);
-    background: var(--md-sys-color-surface-variant);
-    color: var(--md-sys-color-on-surface);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    color: #000000;
     text-align: center;
     transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 
     &:focus {
         outline: none;
-        border-color: var(--md-sys-color-primary);
-        box-shadow: 0 0 0 2px rgba(103, 80, 164, 0.12);
+        border-color: var(--kb-action-bg);
+        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15);
     }
 }
 
@@ -808,13 +815,13 @@ onUnmounted(() => {
 }
 
 .keyboard-container.dark .keyboard-preview input {
-    background: var(--md-sys-color-surface-variant-dark);
-    color: var(--md-sys-color-on-surface-dark);
-    border: 1px solid var(--md-sys-color-outline-dark);
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 
     &:focus {
-        border-color: var(--md-sys-color-primary-dark);
-        box-shadow: 0 0 0 2px rgba(208, 188, 255, 0.12);
+        border-color: var(--kb-action-bg);
+        box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.25);
     }
 }
 
@@ -870,10 +877,10 @@ onUnmounted(() => {
 }
 
 .keyboard-key {
-    background: var(--md-sys-color-surface-variant);
-    color: var(--md-sys-color-on-surface-variant);
+    background: var(--kb-key-bg);
+    color: var(--kb-key-text);
     border: none;
-    border-radius: 1.5rem;
+    border-radius: var(--kb-key-radius);
     height: 4rem;
     min-width: 3rem;
     font-size: clamp(0.875rem, 2.5vw, 2rem);
@@ -886,32 +893,22 @@ onUnmounted(() => {
     justify-content: center;
     align-items: center;
     position: relative;
-    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.08s, transform 0.08s, box-shadow 0.08s;
+    box-shadow: var(--kb-key-shadow);
 
     .small-key-height & {
         height: 2rem;
     }
 
-    /* Material 3 state layer */
     &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: inherit;
-        background: var(--md-sys-color-on-surface-variant);
-        opacity: 0;
-        transition: opacity 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-        pointer-events: none;
+        display: none;
     }
 
     &:disabled {
-        background: rgba(var(--md-sys-color-on-surface), 0.12);
-        color: rgba(var(--md-sys-color-on-surface), 0.38);
+        background: rgba(120, 120, 128, 0.12);
+        color: rgba(120, 120, 128, 0.38);
         cursor: not-allowed;
+        box-shadow: none;
 
         &::before {
             display: none;
@@ -920,17 +917,13 @@ onUnmounted(() => {
 }
 
 .keyboard-container.dark .keyboard-key {
-    background: var(--md-sys-color-surface-variant-dark);
-    color: var(--md-sys-color-on-surface-variant-dark);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
-
-    &::before {
-        background: var(--md-sys-color-on-surface-variant-dark);
-    }
+    background: var(--kb-key-bg);
+    color: var(--kb-key-text);
+    box-shadow: var(--kb-key-shadow);
 
     &:disabled {
-        background: rgba(var(--md-sys-color-on-surface-dark), 0.12);
-        color: rgba(var(--md-sys-color-on-surface-dark), 0.38);
+        background: rgba(120, 120, 128, 0.16);
+        color: rgba(120, 120, 128, 0.38);
     }
 }
 
@@ -957,87 +950,34 @@ onUnmounted(() => {
 }
 
 .shift-key {
-    background: var(--md-sys-color-primary-container) !important;
-    color: var(--md-sys-color-on-primary-container) !important;
+    background: var(--kb-special-key-bg) !important;
+    color: var(--kb-special-key-text) !important;
 
     &.active {
-        background: var(--md-sys-color-primary) !important;
-        color: white !important;
-
-        &::before {
-            background: white;
-        }
-    }
-
-    &::before {
-        background: var(--md-sys-color-on-primary-container);
+        background: var(--kb-key-text) !important;
+        color: var(--kb-bg) !important;
     }
 }
 
 .enter-key {
     height: 4.5rem;
-    background: var(--md-sys-color-primary) !important;
-    color: white !important;
+    background: var(--kb-action-bg) !important;
+    color: var(--kb-action-text) !important;
     font-weight: 600;
-
-    &::before {
-        background: white;
-    }
 }
 
 .backspace-key {
     height: 4.5rem;
-    background: var(--md-sys-color-secondary) !important;
-    color: white !important;
-
-    &::before {
-        background: white;
-    }
-}
-
-.keyboard-container.dark .shift-key {
-    background: var(--md-sys-color-primary-container-dark) !important;
-    color: var(--md-sys-color-on-primary-container-dark) !important;
-
-    &.active {
-        background: var(--md-sys-color-primary-dark) !important;
-        color: var(--md-sys-color-on-primary-container) !important;
-    }
-
-    &::before {
-        background: var(--md-sys-color-on-primary-container-dark);
-    }
-}
-
-.keyboard-container.dark .enter-key {
-    background: var(--md-sys-color-primary-dark) !important;
-    color: var(--md-sys-color-on-primary-container) !important;
-}
-
-.keyboard-container.dark .backspace-key {
-    background: var(--md-sys-color-secondary-dark) !important;
-    color: var(--md-sys-color-on-primary-container) !important;
+    background: var(--kb-special-key-bg) !important;
+    color: var(--kb-special-key-text) !important;
 }
 
 .done-key {
     flex: 1.5 1 0;
     min-width: 3.5rem;
-    background: var(--md-sys-color-primary-container) !important;
-    color: var(--md-sys-color-on-primary-container) !important;
+    background: var(--kb-action-bg) !important;
+    color: var(--kb-action-text) !important;
     font-weight: 600;
-
-    &::before {
-        background: var(--md-sys-color-on-primary-container);
-    }
-}
-
-.keyboard-container.dark .done-key {
-    background: var(--md-sys-color-primary-container-dark) !important;
-    color: var(--md-sys-color-on-primary-container-dark) !important;
-
-    &::before {
-        background: var(--md-sys-color-on-primary-container-dark);
-    }
 }
 
 .keyboard-side-buttons .keyboard-key {
@@ -1045,7 +985,7 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 1.25rem;
+    border-radius: var(--kb-key-radius);
 }
 
 .at-key {
@@ -1054,26 +994,28 @@ onUnmounted(() => {
 }
 
 .sym-key {
-    background: var(--md-sys-color-secondary) !important;
-    color: white !important;
+    background: var(--kb-special-key-bg) !important;
+    color: var(--kb-special-key-text) !important;
     font-weight: 600;
-    border-radius: 1.25rem;
+    border-radius: var(--kb-key-radius);
     flex: 1 1 0;
     min-width: 3rem;
-
-    &::before {
-        background: white;
-    }
 }
 
-.keyboard-container.dark .sym-key {
-    background: var(--md-sys-color-secondary-dark) !important;
-    color: var(--md-sys-color-on-primary-container) !important;
+.keyboard-key.key-pressed {
+    background: var(--kb-active-key-bg) !important;
+    transform: scale(0.96);
+    box-shadow: none;
+}
+
+.keyboard-key:not(.standard-key).key-pressed {
+    background: var(--kb-active-special-key-bg) !important;
 }
 
 @media (max-width: 500px) {
     .keyboard-container {
         --key-gap: 0.25rem;
+        --kb-key-radius: 4px;
     }
 
     .keyboard {
@@ -1083,7 +1025,7 @@ onUnmounted(() => {
 
     .keyboard-key {
         height: 2.75rem;
-        border-radius: 1.25rem;
+        border-radius: var(--kb-key-radius);
         font-size: 0.875rem;
     }
 
